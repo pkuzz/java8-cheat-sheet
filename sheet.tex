@@ -1,0 +1,204 @@
+% source is based on template taken from http://stdout.org/~winston/latex/latexsheet.tex
+\documentclass[10pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{hyperref}
+\usepackage{etoolbox}
+\usepackage{array}
+
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+	{ \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+	{\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+	}
+
+% Turn off header and footer
+\pagestyle{empty}
+ 
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+
+%\preto{\@verbatim}{\topsep=0pt \partopsep=0pt }
+
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+
+% -----------------------------------------------------------------------
+
+\begin{document}
+
+\raggedright
+\footnotesize
+\begin{multicols}{2}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\begin{center}
+     {\Large{\textbf{Java 8 Cheat Sheet}}} \\~\\ 
+Made after reading Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
+\end{center}
+
+\newlength{\DefaultColLen}
+\settowidth{\DefaultColLen}{.................................................}
+
+
+\section{Lambda Expressions}
+
+\subsection{Syntax}
+\begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
+\verb!() -> statement! & single statement with no params \\
+\begin{minipage}[t]{\linewidth}
+\begin{verbatim}
+() -> {
+    body
+}
+\end{verbatim}
+\end{minipage} & multi-line code block with no params\\
+\verb!(T a1, U a2) -> statement! & single statement with two params \\
+\verb!(a1, a2) -> statement! & statement with two params with inferred types\\
+\verb!() -> { return 1; }! & it is illegal to return from lambda\\
+\end{tabular}
+
+\subsection{Functional Interfaces}
+\begin{itemize}
+\setlength\itemsep{0px}
+\item every interface with a single abstract method
+\item use \verb!@FunctionalInterface! where possible
+\item lambda's checked exceptions must match method's exceptions
+\item use \verb!Default Methods! to extends functionality
+\item interfaces can have static methods
+\end{itemize}
+
+\subsection{Default Methods - Diamond problem}
+\begin{itemize}
+\setlength\itemsep{0px}
+\item Superclasses win. Concrete method of superclass has higher priority than any interface methods
+\item Interfaces clash. Explicitly select which interface method should be called.
+\end{itemize}
+
+\subsection{Method and Constructor References}
+\begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
+\verb!object::instanceMethod! & 
+	reference to an instance's method, shortcut to 
+	\verb!(ps) -> object.instanceMethod(ps)! \\
+\verb!Class::staticMethod! & 
+	reference to an static method of class, shortcut to 
+	\verb!(ps) -> Clazz.staticMethod(ps)! \\
+\verb!Class::instanceMethod! & 
+	reference to an first parameter's method, shortcut to 
+	\verb!(x, ps) -> x.instanceMethod(ps)!  where \verb!x! is of type \verb!Class! \\
+\verb!this::instanceMethod! & 
+	reference to a method of enclosing instance, shortcut to
+	\verb!(ps) -> this.methodInstance(ps)! \\
+\verb!super::instanceMethod! & 
+	reference to a method of parent of enclosing instance, shortcut to
+	\verb!(ps) -> super.methodInstance(ps)! \\
+\verb!Class::new! &
+	constructor reference, if there multiple constructors, compiler tries to determine which one to use from context \\
+\verb!type[]::new! & 
+	array's constructor with given length, useful in some \verb!toArray! methods:
+	\verb!stream.toArray(Button[]::new)!
+\end{tabular}
+
+
+
+
+
+\section{Stream API}
+
+\subsection{Summary}
+\begin{itemize}
+\setlength\itemsep{0px}
+\item streams may be finite or not
+\item streams does not store theirs elements
+\item stream operations never mutate the source
+\item stream operations are lazy where possible
+\item there tow kinds of stream operations - \textit{intermediate} (transforming stream) and \textit{terminal} (producing result, after that stream is no longer usable)
+\item stream is \verb!AutoCloseable!
+\end{itemize}
+
+\subsection{Stream Creation}
+\begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
+\verb!Stream.of(array)! & stream from array, generic type is inferred\\
+\verb!Stream.of(v1, v2, v3, ...)! & stream from specified values, generic type is inferred\\ 
+\verb!Array.stream(ary, from, to)! & stream from part of and array \\
+\verb!Stream.empty()! & empty stream, generic type is inferred\\
+\verb!Stream.generate(supplier)! & generates infinite stream with values from \verb!supplier! \\
+\verb!Stream.iterate(seed, op)! & generates infinite stream with values started with \verb!seed! creating next values by \verb!UnaryOperator op! function 
+\end{tabular}
+
+\subsection{Stream Transformation}
+\begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
+\verb!filter(p), map(f), flatMap(f)! & basic transformations\\
+\verb!skip(n), limit(n)! & new stream with skipped given count of entries, or taken given count of entities \\
+\verb!concat(s1, s2)! & concatenates two streams, first stream should be finite to get a change for a second one\\
+\verb!peek(consumer)! & new stream with the same items, but \verb!consumer! applied for each item, useful for debugging\\
+\verb!distinct()! & stateful, suppress duplicates\\
+\verb!sorted! & stateful, return new sorted stream
+\end{tabular}
+
+\subsection{Stream Reductions}
+\verb!reduce!, \verb!anyMatch!, \verb!allMatch!, \verb!noneMatch!, \verb!findAny!, \verb!findFirst!, \verb!min!, \verb!max!, \verb!sum!, etc...         
+
+\subsection{Optional}
+\begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
+\verb!???! & ???\\
+\end{tabular}
+
+\subsection{Collecting Results}
+\begin{itemize}
+\setlength\itemsep{0px}
+\item collecting to simple collections: \verb!Collectors.toSet()!, \verb!Collectors.toList()!, \verb!Collectors.toCollection(collection factory)!, ...
+\item collecting streams: \verb!Collectors.joining()!, ...
+\item collecting numeric: \verb!Collectors.summarizing[Int|Long|Double]()!, ...
+\item terminal iteration over stream: \verb!stream.forEach(consumer)!, \verb!stream.forEachOrdered(consumer)!
+\item collecting to map: \verb!Collectors.toMap(keyFunc, valueFunc[, mergeBinaryOp[, mapSupplier]])!
+\item grouping and partitioning: \verb!Collectors.groupBy(classifierFunction)!, \verb!Collectors.partitioningBy(predicate)!
+\item grouping with downstream collectors: \verb!Collectors.groupBy(classifierFunction, downstreamCollector)!, don't forget, downstream collectors may be deeply nested
+\end{itemize}
+
+\subsection{Parallel Streams}
+\begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
+\verb!???! & ???\\
+\end{tabular}
+
+
+Copyright \copyright\ 2015 Pavel Kuzmenko
+
+
+\end{multicols}
+\end{document}

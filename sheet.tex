@@ -76,6 +76,50 @@ Made after reading Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 \settowidth{\DefaultColLen}{.................................................}
 
 
+
+
+\section{General Info}
+\subsection{Functional Interfaces}
+\begin{itemize}
+\setlength\itemsep{0px}
+\item every interface with a single abstract method is a functional interface
+\item use \verb!@FunctionalInterface! where possible
+\item lambda's checked exceptions must match method's exceptions
+\item use \verb!Default Methods! to extends functionality
+\item interfaces can have static methods
+\end{itemize}
+
+\subsection{Default Methods - Diamond problem}
+\begin{itemize}
+\setlength\itemsep{0px}
+\item Superclasses win. Concrete method of superclass has higher priority than any interface methods
+\item Interfaces clash. Explicitly select which interface method should be called.
+\end{itemize}
+
+\subsection{JDK Common Functional Interfaces}
+\begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
+\verb!Runnable! & simply run action, no params, no return value \\
+\verb!Supplier<T>! & no params, creates value of type \verb!T! \\
+\verb!Consumer<T>! & consumes single param of type \verb!T!, no return value \\
+\verb!BiConsumer<T, U>! & consumes two values of types \verb!T! and \verb!U!, no return value \\
+\verb!Function<T, R>! & function of value of type \verb!T! that return value of type \verb!R! \\
+\verb!BiFunction<T, U, R>! & function of values of types \verb!T! and \verb!U! that return value of type \verb!R! \\
+\verb!UnaryOperator<T! & function of value of type \verb!T! that return value of type \verb!T! \\
+\verb!BinaryOperator<T>! & function of two values of type \verb!T! that return value of type \verb!T! \\
+\verb!Predicate<T>! & boolean-valued function of value of type \verb!T! \\
+\verb!BiPredicate<T, U>! & boolean-valued function of two values of type \verb!T! and \verb!U! \\
+\verb!! &  \\
+\end{tabular}
+
+\subsection{Optional}
+\begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
+\verb!???! & ???\\
+\end{tabular}
+
+
+
+
+
 \section{Lambda Expressions}
 
 \subsection{Syntax}
@@ -93,33 +137,16 @@ Made after reading Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 \verb!() -> { return 1; }! & it is illegal to return from lambda\\
 \end{tabular}
 
-\subsection{Functional Interfaces}
-\begin{itemize}
-\setlength\itemsep{0px}
-\item every interface with a single abstract method
-\item use \verb!@FunctionalInterface! where possible
-\item lambda's checked exceptions must match method's exceptions
-\item use \verb!Default Methods! to extends functionality
-\item interfaces can have static methods
-\end{itemize}
-
-\subsection{Default Methods - Diamond problem}
-\begin{itemize}
-\setlength\itemsep{0px}
-\item Superclasses win. Concrete method of superclass has higher priority than any interface methods
-\item Interfaces clash. Explicitly select which interface method should be called.
-\end{itemize}
-
 \subsection{Method and Constructor References}
 \begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
 \verb!object::instanceMethod! & 
 	reference to an instance's method, shortcut to 
 	\verb!(ps) -> object.instanceMethod(ps)! \\
 \verb!Class::staticMethod! & 
-	reference to an static method of class, shortcut to 
+	reference to a static method of class, shortcut to 
 	\verb!(ps) -> Clazz.staticMethod(ps)! \\
 \verb!Class::instanceMethod! & 
-	reference to an first parameter's method, shortcut to 
+	reference to a first parameter's method, shortcut to 
 	\verb!(x, ps) -> x.instanceMethod(ps)!  where \verb!x! is of type \verb!Class! \\
 \verb!this::instanceMethod! & 
 	reference to a method of enclosing instance, shortcut to
@@ -168,16 +195,11 @@ Made after reading Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 \verb!concat(s1, s2)! & concatenates two streams, first stream should be finite to get a change for a second one\\
 \verb!peek(consumer)! & new stream with the same items, but \verb!consumer! applied for each item, useful for debugging\\
 \verb!distinct()! & stateful, suppress duplicates\\
-\verb!sorted! & stateful, return new sorted stream
+\verb!sorted(comparator)! & stateful, return new sorted stream
 \end{tabular}
 
 \subsection{Stream Reductions}
 \verb!reduce!, \verb!anyMatch!, \verb!allMatch!, \verb!noneMatch!, \verb!findAny!, \verb!findFirst!, \verb!min!, \verb!max!, \verb!sum!, etc...         
-
-\subsection{Optional}
-\begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
-\verb!???! & ???\\
-\end{tabular}
 
 \subsection{Collecting Results}
 \begin{itemize}

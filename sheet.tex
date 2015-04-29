@@ -81,7 +81,7 @@ Inspired by Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 \section{General Info}
 \subsection{Functional Interfaces}
 \begin{itemize}
-\setlength\itemsep{0px}
+\setlength\itemsep{-2px}
 \item every interface with a single abstract method is a functional interface
 \item use \verb!@FunctionalInterface! where possible
 \item lambda's checked exceptions must match method's exceptions
@@ -91,7 +91,7 @@ Inspired by Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 
 \subsection{Default Methods - Diamond problem}
 \begin{itemize}
-\setlength\itemsep{0px}
+\setlength\itemsep{-1px}
 \item Superclasses win. Concrete method of superclass has higher priority than any interface methods
 \item Interfaces clash. Explicitly select which interface method should be called.
 \end{itemize}
@@ -186,7 +186,7 @@ Inspired by Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 
 \subsection{Summary}
 \begin{itemize}
-\setlength\itemsep{0px}
+\setlength\itemsep{-3px}
 \item streams may be finite or not
 \item streams does not store theirs elements
 \item stream operations never mutate the source
@@ -220,7 +220,7 @@ Inspired by Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 
 \subsection{Collecting Results}
 \begin{itemize}
-\setlength\itemsep{0px}
+\setlength\itemsep{-1px}
 \item collecting to simple collections: \verb!Collectors.toSet()!, \verb!Collectors.toList()!, \verb!Collectors.toCollection(collection factory)!, ...
 \item collecting streams: \verb!Collectors.joining()!, ...
 \item collecting numeric: \verb!Collectors.summarizing[Int|Long|Double]()!, ...
@@ -235,6 +235,33 @@ Inspired by Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 \verb!???! & ???\\
 \end{tabular}
 
+
+
+
+
+\section{Date and Time API}
+
+\subsection{General Info}
+\begin{itemize}
+\setlength\itemsep{-2px}
+	\item \verb!Instant! is a point on the time similar to \verb!Date!
+	\item \verb!Duration! is a difference between two \verb!Instant!s
+	\item \verb!LocalDateTime! has no time-zone info
+	\item \verb!TemporalAdjuster! used for common calendar computations
+	\item \verb!ZonedDateTime! is a point in time in a given time zone
+	\item \verb!Period! is a difference between times in time zones (dst's a taken into account)
+	\item \verb!DateTimeFormatter! used to format and parse all the dates
+\end{itemize}
+
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
+~\\
 
 Copyright \copyright\ 2015 Pavel Kuzmenko
 

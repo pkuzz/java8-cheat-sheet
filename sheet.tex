@@ -69,7 +69,7 @@
 
 \begin{center}
      {\Large{\textbf{Java 8 Cheat Sheet}}} \\~\\ 
-Made after reading Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
+Inspired by Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 \end{center}
 
 \newlength{\DefaultColLen}
@@ -104,7 +104,7 @@ Made after reading Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 \verb!BiConsumer<T, U>! & consumes two values of types \verb!T! and \verb!U!, no return value \\
 \verb!Function<T, R>! & function of value of type \verb!T! that return value of type \verb!R! \\
 \verb!BiFunction<T, U, R>! & function of values of types \verb!T! and \verb!U! that return value of type \verb!R! \\
-\verb!UnaryOperator<T! & function of value of type \verb!T! that return value of type \verb!T! \\
+\verb!UnaryOperator<T>! & function of value of type \verb!T! that return value of type \verb!T! \\
 \verb!BinaryOperator<T>! & function of two values of type \verb!T! that return value of type \verb!T! \\
 \verb!Predicate<T>! & boolean-valued function of value of type \verb!T! \\
 \verb!BiPredicate<T, U>! & boolean-valued function of two values of type \verb!T! and \verb!U! \\
@@ -113,8 +113,25 @@ Made after reading Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 
 \subsection{Optional}
 \begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
-\verb!???! & ???\\
+\verb!Optional.of(value)! & creates optional from not-null \verb!value! \\
+\verb!Optional.ofNullable(value)! & creates optional from nullable \verb!value! \\
+\verb!Optional.empty()! & creates \verb!Optional! without value \\
+
+\verb!opt.ifPresent(consumer<T>)! & send data to consumer if it exists\\
+
+\verb!opt.filter(predicate<T>)! & returns new \verb!Optional! if data exists and satisfies given \verb!predicate! or empty \verb!Optional! otherwise \\
+
+\verb!opt.map(function<T, U>)! & send data (if exists) to function and return its value wrapped as \verb!Optional! \\
+
+\verb!opt.flatMap(f<T, Opt<U>>)! & allows to compose functions that return \verb!Optional!s instead of just values \\
+
+\verb!opt.orElse(value)! & return data (if exists) or given \verb!value! otherwise \\
+\verb!opt.orElseGet(function<U>)! & return data (if exists) or function's value otherwise \\
 \end{tabular}
+\begin{itemize}
+\item think of \verb!Optional! as a \verb!Stream! when using \verb!filter!, \verb!map! or \verb!flatMap!
+\item prefer functional style of \verb!ifPresent(func)! over \verb!isPresent()/get()!
+\end{itemize}
 
 
 

@@ -253,6 +253,55 @@ Inspired by Java SE 8 for the Really Impatient \\ by Cay~S.~Horstmann
 	\item \verb!DateTimeFormatter! used to format and parse all the dates
 \end{itemize}
 
+\subsection{Notes}
+\begin{itemize}
+\setlength\itemsep{-2px}
+	\item if one need \verb!Duration!'s accuracy in nanos, do not transform duration to \verb!long!, do computations with \verb!Duration!'s methods like \verb!plusNanos! etc
+	\item \verb!Instant! and \verb!Duration! are immutable
+	\item prefer using \verb!Local! dates and times unless you are know what you are doing
+	\item useful enums: \verb!Month!, \verb!DayOfWeek!
+	\item classes for partial dates: \verb!MonthDay!, \verb!YearMonth!, \verb!Year!
+	\item use \verb!T.now()!, \verb!T.of(..)! to create data/time/instant instances  of type \verb!T!
+	\item \verb!DST! issues:
+		\begin{itemize}
+			\setlength\itemsep{-2px}
+			\item when constructing non-existent time (on + shift) one hour will be added 
+			\item when constructing two-instant time (on - shift) earlier instant will be taken
+		\end{itemize}
+	\item when using \verb!ZonedDateTime! for calculations use \verb!Period!, not \verb!Duration! 
+\end{itemize}
+
+
+\subsection{Date Adjusters}
+Adjusters in \verb!TemoralAdjusters!
+\begin{tabular}{@{}m{\the\DefaultColLen}@{}m{\linewidth-\the\DefaultColLen}@{}}
+\verb!next(wd), previous(wd)! & next or previous date at given weekday\\
+
+\begin{minipage}[t]{\linewidth}
+\begin{verbatim}
+nextOrSame(wd),
+previousOrSame(wd)
+\end{verbatim}
+\end{minipage} & next or previous date at given weekday, but starting from the given date\\
+
+\verb!dayOfWeekInMonth(n, wd)! & The \verb!n!th weekday in month\\
+
+\verb!lastInMonth(wd)! & The last weekday in month\\
+
+\begin{minipage}[t]{\linewidth}
+\begin{verbatim}
+firstDayOfMonth(), 
+firstDayOfNextMonth(),
+firstDayOfNextYear(), 
+lastDayOfMonth(),
+lastDayOfPreviousMonth(), 
+lastDayOfYear()
+\end{verbatim}
+\end{minipage} & the date described in the method name\\
+
+\verb!ofDateAdjuster(dateOp)! & creates new temporal adjuster from given unary operator over \verb!LocalDate!
+\end{tabular}
+
 ~\\
 ~\\
 ~\\
